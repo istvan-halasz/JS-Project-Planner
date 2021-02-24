@@ -12,9 +12,34 @@ class DOMHelper {
   }
 }
 
-class ToolTip {
+class Component {
+  constructor(hostElementId, insertBefore = false) {
+    if (hostElementId) {
+      this.hostElement = document.getElementById(hostElementId);
+    } else {
+      this.hostElement = document.body;
+    }
+    this.insertBefore = insertBefore;
+  }
+
+  detach() {
+    this.element.remove();
+  }
+
+  attach() {
+    this.hostElement.insertAdjacentElement(
+      this.insertBefore ? 'afterbegin' : 'beforeend',
+      this.element
+    );
+  }
+}
+
+class ToolTip extends Component {
   constructor(closeNotifierFunction) {
+    super('active-projects', true);
+    super();
     this.closeNotifier = closeNotifierFunction;
+    this.create();
   }
 
   closeTooltip = () => {
@@ -22,18 +47,12 @@ class ToolTip {
     this.closeNotifier();
   };
 
-  detach = () => {
-    this.element.remove();
-    //this.element.parentElement.removeChild(this.element);
-  };
-
-  attach() {
+  create() {
     const tooltipElement = document.createElement('div');
     tooltipElement.className = 'card';
     tooltipElement.textContent = 'DUMMY';
     tooltipElement.addEventListener('click', this.closeTooltip);
     this.element = tooltipElement;
-    document.body.append(tooltipElement);
   }
 }
 
