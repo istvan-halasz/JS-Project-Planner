@@ -23,7 +23,10 @@ class Component {
   }
 
   detach() {
-    this.element.remove();
+    if (this.element) {
+      this.element.remove();
+      // this.element.parentElement.removeChild(this.element);
+    }
   }
 
   attach() {
@@ -34,9 +37,9 @@ class Component {
   }
 }
 
-class ToolTip extends Component {
+class Tooltip extends Component {
   constructor(closeNotifierFunction, text) {
-    super('active-projects', true);
+    super();
     this.closeNotifier = closeNotifierFunction;
     this.text = text;
     this.create();
@@ -58,6 +61,7 @@ class ToolTip extends Component {
 
 class ProjectItem {
   hasActiveTooltip = false;
+
   constructor(id, updateProjectListsFunction, type) {
     this.id = id;
     this.updateProjectListsHandler = updateProjectListsFunction;
@@ -70,11 +74,10 @@ class ProjectItem {
       return;
     }
     const projectElement = document.getElementById(this.id);
-    const toolTipText = projectElement.dataset.extraInfo;
-
-    const tooltip = new ToolTip(() => {
+    const tooltipText = projectElement.dataset.extraInfo;
+    const tooltip = new Tooltip(() => {
       this.hasActiveTooltip = false;
-    }, toolTipText);
+    }, tooltipText);
     tooltip.attach();
     this.hasActiveTooltip = true;
   }
@@ -106,6 +109,7 @@ class ProjectItem {
 
 class ProjectList {
   projects = [];
+
   constructor(type) {
     this.type = type;
     const prjItems = document.querySelectorAll(`#${type}-projects li`);
@@ -123,16 +127,15 @@ class ProjectList {
 
   addProject(project) {
     this.projects.push(project);
-    console.log(this);
     DOMHelper.moveElement(project.id, `#${this.type}-projects ul`);
     project.update(this.switchProject.bind(this), this.type);
   }
 
   switchProject(projectId) {
-    //const projectIndex = this.projects.findIndex(p => p.id === projectId);
-    //this.projects.splice(projectIndex, 1);
-    this.switchHandler(this.projects.find((p) => p.id === projectId));
-    this.projects = this.projects.filter((p) => p.id !== projectId);
+    // const projectIndex = this.projects.findIndex(p => p.id === projectId);
+    // this.projects.splice(projectIndex, 1);
+    this.switchHandler(this.projects.find(p => p.id === projectId));
+    this.projects = this.projects.filter(p => p.id !== projectId);
   }
 }
 
@@ -140,11 +143,9 @@ class App {
   static init() {
     const activeProjectsList = new ProjectList('active');
     const finishedProjectsList = new ProjectList('finished');
-
     activeProjectsList.setSwitchHandlerFunction(
       finishedProjectsList.addProject.bind(finishedProjectsList)
     );
-
     finishedProjectsList.setSwitchHandlerFunction(
       activeProjectsList.addProject.bind(activeProjectsList)
     );
