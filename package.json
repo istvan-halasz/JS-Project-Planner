@@ -1,0 +1,22 @@
+{
+  "name": "js-project-planner",
+  "version": "1.0.0",
+  "description": "Javascript - The Complete Guide",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/istvan-halasz/JS-Project-Planner.git"
+  },
+  "author": "Halasz Istvan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/istvan-halasz/JS-Project-Planner/issues"
+  },
+  "homepage": "https://github.com/istvan-halasz/JS-Project-Planner#readme",
+  "devDependencies": {
+    "eslint": "^7.21.0"
+  }
+}
