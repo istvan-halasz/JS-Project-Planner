@@ -1,6 +1,6 @@
 import { ProjectList } from './App/ProjectList.js';
 
-globalThis.DEFAULT_VALUE = "Attila";
+globalThis.DEFAULT_VALUE = 'Attila';
 
 class App {
   static init() {
