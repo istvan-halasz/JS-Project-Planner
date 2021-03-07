@@ -1,11 +1,13 @@
-import Component from './Component';
+import Cmp, { doSomething } from './Component';
 
-export class Tooltip extends Component {
+console.log('Tooltip running');
+
+export class Tooltip extends Cmp {
   constructor(closeNotifierFunction, text, hostElementId) {
     super(hostElementId);
     this.closeNotifier = closeNotifierFunction;
     this.text = text;
-    closeTooltip = () => {
+    this.closeTooltip = () => {
       this.detach();
       this.closeNotifier();
     };
@@ -22,14 +24,14 @@ export class Tooltip extends Component {
 
     const hostElPosLeft = this.hostElement.offsetLeft;
     const hostElPosTop = this.hostElement.offsetTop;
-    const hostElHeight = this.hostElement.clientHeight - 10;
+    const hostElHeight = this.hostElement.clientHeight;
     const parentElementScrolling = this.hostElement.parentElement.scrollTop;
 
     const x = hostElPosLeft + 20;
-    const y = hostElPosTop + hostElHeight - parentElementScrolling;
+    const y = hostElPosTop + hostElHeight - parentElementScrolling - 10;
 
     tooltipElement.style.position = 'absolute';
-    tooltipElement.style.left = x + 'px'; //500px
+    tooltipElement.style.left = x + 'px'; // 500px
     tooltipElement.style.top = y + 'px';
 
     tooltipElement.addEventListener('click', this.closeTooltip);
